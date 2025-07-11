@@ -1,8 +1,10 @@
+"use client";
 import React from 'react'
+import Login from './login/page'
 
 function App() {
   return (
-    <div>Hello World</div>
+    <div><Login /></div>
   )
 }
 

@@ -1,4 +1,4 @@
-// app/api/create-trainer/route.js
+"use server";
 import { NextResponse } from 'next/server';
 import ConnectDB from '@/app/utils/db';
 import Trainer from '@/app/models/trainerProfile';
@@ -9,7 +9,7 @@ export async function POST(request) {
   try {
     const body = await request.json();
 
-    // Validate required fields
+
     const requiredFields = ['firstName', 'email', 'phone'];
     const missingFields = requiredFields.filter(field => !body[field]);
     
@@ -20,11 +20,11 @@ export async function POST(request) {
       }, { status: 400 });
     }
 
-    // Process base64 files - converts to Buffer
+ 
     const processBase64 = (base64String) => {
       if (!base64String) return null;
       try {
-        // Remove data URL prefix if present
+
         const base64Data = base64String.startsWith('data:') 
           ? base64String.split(',')[1] 
           : base64String;
@@ -35,20 +35,20 @@ export async function POST(request) {
       }
     };
 
-    // Process arrays to ensure they're properly formatted
+
     const processArray = (arr) => {
       if (!arr) return [];
       return Array.isArray(arr) ? arr : [arr];
     };
 
-    // Process string to array conversion
+
     const stringToArray = (str) => {
       if (!str) return [];
       if (Array.isArray(str)) return str;
       return str.split(',').map(item => item.trim()).filter(item => item);
     };
 
-    // Create new trainer with proper data structure
+
     const trainer = new Trainer({
       basicInfo: {
         firstName: body.firstName,
@@ -106,7 +106,7 @@ export async function POST(request) {
       message: 'Trainer created successfully',
       data: {
         ...savedTrainer.toObject(),
-        // Optionally exclude binary data from response
+     
         documents: {
           ...savedTrainer.documents,
           aadhaarFileData: '[Binary Data]',
@@ -133,6 +133,48 @@ export async function POST(request) {
     return NextResponse.json({
       success: false,
       message: 'Error creating trainer',
+      error: error.message
+    }, { status: 500 });
+  }
+}
+
+
+export async function GET() { 
+  await ConnectDB();
+
+  try {
+    const trainers = await Trainer.find({});
+
+    return NextResponse.json({
+      success: true,
+      data: trainers.map(trainer => ({
+        ...trainer.toObject(),
+        documents: {
+          ...trainer.documents,
+          aadhaarFileData: '[Binary Data]',
+          panFileData: '[Binary Data]',
+          resumeFileData: '[Binary Data]',
+          tenthCertFileData: '[Binary Data]',
+          additionalDocuments: trainer.documents.additionalDocuments.map(doc => ({
+            ...doc,
+            fileData: '[Binary Data]'
+          }))
+        },
+        professionalDetails: {
+          ...trainer.professionalDetails,
+          certifications: trainer.professionalDetails.certifications.map(cert => ({
+            ...cert,
+            fileData: '[Binary Data]'
+          }))
+        }
+      }))
+    }, { status: 200 });
+
+  } catch (error) {
+    console.error('Error fetching trainers:', error);
+    return NextResponse.json({
+      success: false,
+      message: 'Error fetching trainers',
       error: error.message
     }, { status: 500 });
   }
