@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function CreateTrainer() {
-  // Form state
+
   const [experience, setExperience] = useState('');
   const [experienceLevel, setExperienceLevel] = useState('');
   const [teachingMode, setTeachingMode] = useState('');
@@ -38,7 +38,7 @@ export default function CreateTrainer() {
     tenthCertFile: null
   });
 
-  // Location and loading states
+
   const [locationData, setLocationData] = useState({
     city: '',
     state: '',
@@ -49,7 +49,7 @@ export default function CreateTrainer() {
 
   const masterCourses = ['Full Stack Development', 'Data Science', 'UI/UX Design'];
 
-  // Convert files to base64
+
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -59,7 +59,7 @@ export default function CreateTrainer() {
     });
   };
 
-  // Fetch location data when pincode changes
+
   useEffect(() => {
     const fetchLocation = async () => {
       if (formValues.pincode.length === 6) {
@@ -69,7 +69,7 @@ export default function CreateTrainer() {
           const response = await axios.get(
             `https://app.zipcodebase.com/api/v1/search?apikey=${apiKey}&codes=${formValues.pincode}&country=in`
           );
-          
+
           const results = response.data.results[formValues.pincode];
           if (results && results.length > 0) {
             const location = results[0];
@@ -94,7 +94,6 @@ export default function CreateTrainer() {
     return () => clearTimeout(debounceTimer);
   }, [formValues.pincode]);
 
-  // Update form values when location data changes
   useEffect(() => {
     setFormValues(prev => ({
       ...prev,
@@ -104,20 +103,20 @@ export default function CreateTrainer() {
     }));
   }, [locationData]);
 
-  // Handle form field changes
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues(prev => ({ ...prev, [name]: value }));
   };
 
-  // Handle file uploads
+
   const handleFileChange = async (e, index, type) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     try {
       const base64 = await convertToBase64(file);
-      
+
       if (type === 'certificate') {
         const updated = [...certificates];
         updated[index] = { ...updated[index], file: base64 };
@@ -135,7 +134,7 @@ export default function CreateTrainer() {
     }
   };
 
-  // Add/remove dynamic fields
+
   const addCertificate = () => setCertificates([...certificates, { name: '', file: null }]);
   const removeCertificate = (index) => {
     const updated = [...certificates];
@@ -150,7 +149,7 @@ export default function CreateTrainer() {
     setDocuments(updated);
   };
 
-  // Form submission
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -177,7 +176,7 @@ export default function CreateTrainer() {
     }
   };
 
-  // Reset form
+
   const resetForm = () => {
     setFormValues({
       firstName: '',
@@ -220,7 +219,7 @@ export default function CreateTrainer() {
       <h1 className="text-3xl font-bold text-purple-800 mb-10 text-center">Create Trainer</h1>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        {/* Card 1: Basic Information */}
+
         <div className="bg-white rounded-2xl shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">1. Basic Information</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -362,7 +361,7 @@ export default function CreateTrainer() {
           </div>
         </div>
 
-        {/* Card 2: Professional Details */}
+
         <div className="bg-white rounded-2xl shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">2. Professional Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -403,8 +402,8 @@ export default function CreateTrainer() {
                 <option value="">Select Experience</option>
                 <option value="Fresher">Fresher</option>
                 {[...Array(10)].map((_, i) => (
-                  <option key={i} value={`${i+1} Year${i > 0 ? 's' : ''}`}>
-                    {i+1} Year{i > 0 && 's'}
+                  <option key={i} value={`${i + 1} Year${i > 0 ? 's' : ''}`}>
+                    {i + 1} Year{i > 0 && 's'}
                   </option>
                 ))}
               </select>
@@ -493,7 +492,7 @@ export default function CreateTrainer() {
           </div>
         </div>
 
-        {/* Card 3: Work & Teaching Experience */}
+
         <div className="bg-white rounded-2xl shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">3. Work & Teaching Experience</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -564,7 +563,7 @@ export default function CreateTrainer() {
           </div>
         </div>
 
-        {/* Card 4: Additional Information */}
+
         <div className="bg-white rounded-2xl shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">4. Additional Information</h2>
           <div className="grid grid-cols-1 gap-4">
@@ -600,7 +599,7 @@ export default function CreateTrainer() {
           </div>
         </div>
 
-        {/* Card 5: Documentary Upload */}
+
         <div className="bg-white rounded-2xl shadow-md p-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-4">5. Documentary Upload</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -719,7 +718,7 @@ export default function CreateTrainer() {
           </div>
         </div>
 
-        {/* Form Actions */}
+
         <div className="flex justify-end space-x-4">
           <button
             type="button"

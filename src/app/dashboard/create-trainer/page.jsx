@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function CreateTrainer() {
-  // Form state
+
   const [experience, setExperience] = useState('');
   const [experienceLevel, setExperienceLevel] = useState('');
   const [teachingMode, setTeachingMode] = useState('');
@@ -38,7 +38,7 @@ export default function CreateTrainer() {
     tenthCertFile: null
   });
 
-  // Location and loading states
+ 
   const [locationData, setLocationData] = useState({
     city: '',
     state: '',
@@ -49,7 +49,7 @@ export default function CreateTrainer() {
 
   const masterCourses = ['Full Stack Development', 'Data Science', 'UI/UX Design'];
 
-  // Convert files to base64
+
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -59,7 +59,7 @@ export default function CreateTrainer() {
     });
   };
 
-  // Fetch location data when pincode changes
+
   useEffect(() => {
     const fetchLocation = async () => {
       if (formValues.pincode.length === 6) {
@@ -94,7 +94,6 @@ export default function CreateTrainer() {
     return () => clearTimeout(debounceTimer);
   }, [formValues.pincode]);
 
-  // Update form values when location data changes
   useEffect(() => {
     setFormValues(prev => ({
       ...prev,
@@ -104,13 +103,12 @@ export default function CreateTrainer() {
     }));
   }, [locationData]);
 
-  // Handle form field changes
+ 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues(prev => ({ ...prev, [name]: value }));
   };
 
-  // Handle file uploads
   const handleFileChange = async (e, index, type) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -135,7 +133,7 @@ export default function CreateTrainer() {
     }
   };
 
-  // Add/remove dynamic fields
+ 
   const addCertificate = () => setCertificates([...certificates, { name: '', file: null }]);
   const removeCertificate = (index) => {
     const updated = [...certificates];
@@ -150,7 +148,7 @@ export default function CreateTrainer() {
     setDocuments(updated);
   };
 
-  // Form submission
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -177,7 +175,7 @@ export default function CreateTrainer() {
     }
   };
 
-  // Reset form
+
   const resetForm = () => {
     setFormValues({
       firstName: '',
@@ -362,7 +360,7 @@ export default function CreateTrainer() {
           </div>
         </div>
 
-        {/* Card 2: Professional Details */}
+
         <div className="bg-white rounded-2xl shadow-md p-6">
           <h2 className="ext-sm font-semibold text-gray-800 mb-4">2. Professional Details</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

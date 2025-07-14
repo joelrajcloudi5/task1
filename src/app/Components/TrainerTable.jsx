@@ -14,7 +14,7 @@ export default function TrainerTable() {
         const res = await axios.get("/api/create-trainer");
         console.log("API Response:", res.data);
 
-     
+      
         const data = Array.isArray(res.data) ? res.data : res.data.trainers || [];
         setTrainers(data);
       } catch (err) {
@@ -59,7 +59,7 @@ export default function TrainerTable() {
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(trainers) && trainers.length === 0 ? (
+            {trainers.length === 0 ? (
               <tr>
                 <td colSpan="6" className="text-center py-4 text-gray-500">
                   No trainers found.
